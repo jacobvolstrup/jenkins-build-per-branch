@@ -75,6 +75,7 @@ class JenkinsApi {
     String configForMissingJob(ConcreteJob missingJob, List<TemplateJob> templateJobs) {
         TemplateJob templateJob = missingJob.templateJob
         String config = getJobConfig(templateJob.jobName)
+		println("config (1): " + config)
 
         def ignoreTags = ["assignedNode"]
 
@@ -88,10 +89,13 @@ class JenkinsApi {
                 return "$prefix${missingJob.branchName}<"
             }
         }
+		println("config (2): " + config)
         String branchTemplate = "";
         String oldBranch = "";
 
-        if(config.contains("<name>")){
+        /*if(config.contains("<hudson.plugins.git.BranchSpec>")){
+		    int bs = config.indexOf("<hudson.plugins.git.BranchSpec>") +6;
+		
             int s = config.indexOf("<name>") +6;
             int e = config.indexOf("</name>");
 
@@ -107,13 +111,15 @@ class JenkinsApi {
         }
         if(branchTemplate !="" && oldBranch !="") {
             config = config.replace("<name>" + oldBranch + "</name>", "<name>" + oldBranch + branchTemplate + "</name>");
-        }
+			println("config: " + config)
+        }*/
 
 
         // this is in case there are other down-stream jobs that this job calls, we want to be sure we're replacing their names as well
         templateJobs.each {
             config = config.replaceAll(it.jobName, it.jobNameForBranch(missingJob.branchName))
         }
+		println("config (3): " + config)
 
         return config
     }
