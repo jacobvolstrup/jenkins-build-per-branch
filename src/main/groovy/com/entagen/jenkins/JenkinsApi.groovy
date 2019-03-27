@@ -95,10 +95,14 @@ class JenkinsApi {
             int s = config.indexOf("<name>") +6;
             int e = config.indexOf("</name>");
 
+			println("config: " + config)
             oldBranch = config.substring(s,e);
+			println("oldBranch: " + oldBranch)
             String branchSafe = oldBranch.replace("/","_");
+			println("branchSafe: " + branchSafe)
             s = missingJob.jobName.indexOf(branchSafe)+branchSafe.length();
             branchTemplate = missingJob.jobName.substring(s);
+			println("branchTemplate: " + branchTemplate)
 
         }
         if(branchTemplate !="" && oldBranch !="") {
