@@ -75,7 +75,6 @@ class JenkinsApi {
     String configForMissingJob(ConcreteJob missingJob, List<TemplateJob> templateJobs) {
         TemplateJob templateJob = missingJob.templateJob
         String config = getJobConfig(templateJob.jobName)
-		println("config (1): " + config)
 
         def ignoreTags = ["assignedNode"]
 
@@ -89,7 +88,7 @@ class JenkinsApi {
                 return "$prefix${missingJob.branchName}<"
             }
         }
-		println("config (2): " + config)
+		config = config.replaceAll("udkpe/udkpe", "udkpe");
         String branchTemplate = "";
         String oldBranch = "";
 
@@ -119,7 +118,6 @@ class JenkinsApi {
         templateJobs.each {
             config = config.replaceAll(it.jobName, it.jobNameForBranch(missingJob.branchName))
         }
-		println("config (3): " + config)
 
         return config
     }
